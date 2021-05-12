@@ -18,28 +18,34 @@ class Wallet {
         return this.keyPair.getPrivate().toString('hex');
     }
 
-    // Ham tham khao
     getBalance(blockchain) {
-        let balance = this.balance;
+        let balance = config.INIT_BALANCE;
         let transactions = [];
 
         blockchain.chain.forEach(block => block.data.forEach(tx => {
             transactions.push(tx);
         }));
 
-        for(let tx of transactions) {
+        for (let tx of transactions) {
             let minus = 0;
-            for(let i = 0; i<tx.outputs.length;i++) {
-                if(tx.outputs[i].address === this.publicKey && i>0){
-                    balance+=tx.outputs[i].amount;
-                }
 
-                if(tx.outputs[0].address===this.publicKey && i!==0) {
-                    minus+=tx.outputs[i].amount;
+            if (tx.outputs.length === 1 && tx.outputs[0].address === this.publicKey) {
+                balance += tx.outputs[0].amount;
+            } else {
+                for (let i = 0; i < tx.outputs.length; i++) {
+                    if (tx.outputs[i].address === this.publicKey && i > 0) {
+                        balance += tx.outputs[i].amount;
+                    }
+
+                    if (tx.outputs[0].address === this.publicKey && i !== 0) {
+                        minus += tx.outputs[i].amount;
+                    }
                 }
             }
+            
             balance -= minus;
         }
+        this.balance = balance;
         return balance;
     }
 

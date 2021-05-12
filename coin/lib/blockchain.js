@@ -31,6 +31,35 @@ class BlockChain {
 
         return true;
     }
+
+    sameChainValid(chain){
+        if(JSON.stringify(chain[0])!== JSON.stringify(this.chain[0])) return false;
+
+        for(let i=1;i<chain.length;i++){
+            let block = chain[i];
+            let lastBlock = chain[i-1];
+
+            if(block.previousHash !== lastBlock.hash) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    replaceChain(newChain){
+        if(newChain.length <= this.chain.length){
+            console.log('Received chain is not longer than the current chain.');
+            return;
+        }
+
+        if(!this.sameChainValid(newChain)){
+            console.log('The Received chain is not valid.');
+            return;
+        }
+
+        console.log('Replacing the blockchain with the new Chain.');
+        this.chain = newChain;
+    }
 };
 
 module.exports = BlockChain;

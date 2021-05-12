@@ -42,6 +42,13 @@ class Transaction {
     verify() {
         return util.verifySignature(this.input.address, this.input.signature, util.hash(JSON.stringify(this.outputs)))
     }
+    static verifyTransaction(transaction){
+        return util.verifySignature(
+            transaction.input.address,
+            transaction.input.signature,
+            util.hash(JSON.stringify(transaction.outputs))
+        );
+    }
 
     update(fromWallet, toAddress, amount) {
         const fromWalletOutput = this.outputs.find(output => output.address === fromWallet.publicKey);

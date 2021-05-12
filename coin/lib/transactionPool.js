@@ -9,6 +9,17 @@ class TransactionPool {
         this.transactions.push(transaction);
     };
 
+    updateOrAddTransaction(transaction){
+        let transactionWithID = this.transactions.find(t => t.id === transaction.id);
+
+        if(transactionWithID){
+            this.transactions[this.transactions.indexOf(transactionWithID)] = transaction;
+        }else{
+            this.transactions.push(transaction);
+        }
+
+    }
+
     clear() {
         this.transactions = [];
     };
@@ -24,7 +35,7 @@ class TransactionPool {
                 return;
             }
             
-            if(!tx.verify()) { 
+            if(!Transaction.verifyTransaction(tx)) { 
                 console.log('Transaction failed to verify!!!')
                 return;
             }
