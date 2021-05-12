@@ -16,6 +16,16 @@ class BlockChain {
         return block;
     };
 
+    addMinedBlock(newMinedBlock) {
+        const newChain = this.chain.map(b => b);
+        newChain.push(newMinedBlock);
+        if (newChain.isValidChain()) {
+            this.chain.push(newMinedBlock);
+            return true;
+        }
+        return false;
+    }
+
     getLastBlock() {
         return this.chain[this.chain.length - 1];
     };
@@ -29,6 +39,22 @@ class BlockChain {
             }
         };
 
+        return true;
+    }
+
+    replaceChain(newChain){
+        if(newChain.length <= this.chain.length){
+            console.log('Received chain is not longer than the current chain.');
+            return false;
+        }
+
+        if(!this.isValidChain(newChain)){
+            console.log('The Received chain is not valid.');
+            return false;
+        }
+
+        console.log('Replacing the blockchain with the new Chain.');
+        this.chain = newChain;
         return true;
     }
 };

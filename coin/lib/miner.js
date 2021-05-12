@@ -15,9 +15,9 @@ class Miner {
             Transaction.reward( Wallet.blockchainWallet(), this.wallet)
         )
         const block = this.blockchain.addBlock(validTransactions);
-        this.p2pServer.syncChain();
-        this.p2pServer.broadcastClearTransaction();
+        this.p2pServer.broadcastLatest();
         this.transactionPool.clear();
+        this.p2pServer.broadCastTransactionPool()
 
         return block;
     }

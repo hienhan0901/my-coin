@@ -27,16 +27,14 @@ app.get('/blocks', (req, res) => {
 });
 
 //add blocks to blockchain
-app.post('/mine', (req, res) => {
+// app.post('/mine', (req, res) => {
 
-    console.log(req.body.data);
-    const block = bc.addBlock(req.body.data);
-    console.log(`New block added : ${block.toString()}`);
+//     console.log(req.body.data);
+//     const block = bc.addBlock(req.body.data);
+//     console.log(`New block added : ${block.toString()}`);
+//     res.redirect('/blocks');
 
-    p2pServer.syncChain();
-    res.redirect('/blocks');
-
-});
+// });
 
 //get all transactions
 app.get('/transactions', (req, res) => {
@@ -47,7 +45,7 @@ app.get('/transactions', (req, res) => {
 app.post('/transact', (req, res) => {
     const { recipient, amount } = req.body;
     const transaction = wallet.createTransaction(recipient, amount, bc, tp);
-    p2pServer.broadcastTransaction(transaction);
+    p2pServer.broadCastTransactionPool();
     res.redirect('/transactions');
 });
 
@@ -61,6 +59,15 @@ app.get('/mine-transactions', (req, res) => {
 //get own public key
 app.get('/publicKey', (req, res) => {
     res.json({ "PublicKey": wallet.publicKey });
+});
+
+app.get('/balance', (req, res) => {
+    res.json({ "balance": wallet.getBalance(bc) });
+});
+
+app.post('/addPeer', (req, res) => {
+    p2pServer.connectToPeers(req.body.peer);
+    res.send();
 });
 
 app.listen(HTTP_PORT, () => {
