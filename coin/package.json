@@ -5,7 +5,7 @@
   "main": "./main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./main",
+    "start": "nodemon ./main",
     "dev": "nodemon ./mainHTTP_PORT=3001 P2P_PORT=5001 PEERS=ws://localhost:5000 npm run dev"
   },
   "keywords": [],
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
     "elliptic": "^6.5.4",
     "express": "^4.17.1",

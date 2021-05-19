@@ -4,8 +4,13 @@ const util = require("../util/util");
 const Transaction = require('./transaction');
 
 class Wallet {
-    constructor() {
-        this.keyPair = util.genKeyPair();
+    constructor(ecKeyPair) {
+
+        if (ecKeyPair !== undefined) {
+            this.keyPair = ecKeyPair;
+        } else {
+            this.keyPair = util.genKeyPair();
+        }
         this.publicKey = this.getPublicKey();
         this.balance = config.INIT_BALANCE;
     }
@@ -70,6 +75,23 @@ class Wallet {
         }
 
         return tx;
+    }
+
+    getHistory(blockchain) {
+        let transactions = [];
+
+        blockchain.chain.forEach(block => block.data.forEach(tx => {
+            if (tx.input.address === this.publicKey) {
+                transactions.push(tx);
+            } else {
+            for(let o of tx.outputs) {
+                if(o.address === this.publicKey)
+                transactions.push(tx)
+                break;
+            }
+        }
+        }));
+        return transactions;
     }
     
     static blockchainWallet(){

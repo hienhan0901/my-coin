@@ -19,6 +19,11 @@ class BlockChain {
     getLastBlock() {
         return this.chain[this.chain.length - 1];
     };
+
+    getBlock(index) {
+        if (index < 0 || index > this.chain.length - 1) {return {}};
+        return this.chain[index];
+    }
     
     isValidChain() {
         if(JSON.stringify(this.chain[0])!== JSON.stringify(Block.genesis())) return false;

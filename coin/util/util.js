@@ -12,6 +12,10 @@ module.exports = {
         return ec.genKeyPair();
     },
 
+    keyFromPrivate(privateKey) {
+        return ec.keyFromPrivate(privateKey);
+    },
+
     verifySignature(publicKey, signature, dataHash) {
         return ec.keyFromPublic(publicKey, 'hex').verify(dataHash, signature);
     }
